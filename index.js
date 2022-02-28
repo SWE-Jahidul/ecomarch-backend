@@ -35,6 +35,8 @@ async function run() {
     email: String,
     password: String,
   });
+
+  // product schema
   const productSchema = new mongoose.Schema({
     product_name: {
       type: String,
@@ -121,10 +123,6 @@ async function run() {
           });
         }
       );
-
-  
-   
-    
     }
 
     // Routes
@@ -168,31 +166,26 @@ async function run() {
     // });
   );
 
-
-    app.get("/products", (req, res) => {
-        response = {  
-          first_name:req.query.first_name,  
-          last_name:req.query.last_name,
-          product_name: req.query.product_name,
-          product_id: req.query.product_id,
-          stock_quality: req.query.stock_quality,
-          stock_qantity: req.query.stock_qantity,
-          min_price: req.query.min_price,
-          product_brand: req.query.product_brand,
-          category: req.query.category,
-          product_details: req.query.product_details,
-          added_date: req.query.added_date,
-          thambnil: req.query.thambnil,
-          img: req.query.img,
-      };  
-      console.log("jsdh");  
-      res.end(JSON.stringify(response));  
-
-      });
-
-
-
-
+  // Product get Method
+  app.get("/products", (req, res) => {
+    response = {
+      first_name: req.query.first_name,
+      last_name: req.query.last_name,
+      product_name: req.query.product_name,
+      product_id: req.query.product_id,
+      stock_quality: req.query.stock_quality,
+      stock_qantity: req.query.stock_qantity,
+      min_price: req.query.min_price,
+      product_brand: req.query.product_brand,
+      category: req.query.category,
+      product_details: req.query.product_details,
+      added_date: req.query.added_date,
+      thambnil: req.query.thambnil,
+      img: req.query.img,
+    };
+    console.log("jsdh");
+    res.end(JSON.stringify(response));
+  });
 }
 run().catch(console.dir);
 
