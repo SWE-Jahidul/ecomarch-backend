@@ -7,6 +7,7 @@ const axios = require("axios");
 const cors = require("cors");
 require("dotenv").config();
 const bodyParser = require("body-parser");
+const { stringify } = require("nodemon/lib/utils");
 
 app.set("port", process.env.PORT || 5000);
 
@@ -15,7 +16,7 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
-app.use(cors({ origin: "http://localhost:3000", credentials: false }));
+app.use(cors({ origin: "http://localhost:3006", credentials: false }));
 
 //  MonngoDb Connect
 mongoose.connect(
@@ -40,7 +41,6 @@ async function run() {
   const productSchema = new mongoose.Schema({
     product_name: {
       type: String,
-      required: true,
     },
     product_id: String,
     stock_quality: String,
@@ -65,7 +65,7 @@ async function run() {
 
   // product Schema
 
-  const User = new mongoose.model("User", userSchema);
+  // const User = new mongoose.model("User", userSchema);
   const Products = new mongoose.model("Products", productSchema);
 
   // Post product Data
@@ -85,7 +85,7 @@ async function run() {
         thambnil,
         img,
       } = req.body;
-      User.findOne(
+      Products.findOne(
         {
           product_name: product_name,
           product_id: product_id,
@@ -100,7 +100,8 @@ async function run() {
           img: img,
         },
         (err, user) => {
-          const products = new Products({
+          const product11 = new Products({
+            product_name,
             product_id,
             stock_quality,
             stock_qantity,
@@ -112,12 +113,13 @@ async function run() {
             thambnil,
             img,
           });
-          Products.save((err) => {
+          product11.save((err) => {
             if (err) {
               res.send(err);
+              console.log("rrr", res);
             } else {
               res.send({
-                message: "Successfully Registered, Please login now.",
+                message: "Successfully Product Added , Please login now.",
               });
             }
           });
@@ -167,24 +169,10 @@ async function run() {
   );
 
   // Product get Method
-  app.get("/products", (req, res) => {
-    response = {
-      first_name: req.query.first_name,
-      last_name: req.query.last_name,
-      product_name: req.query.product_name,
-      product_id: req.query.product_id,
-      stock_quality: req.query.stock_quality,
-      stock_qantity: req.query.stock_qantity,
-      min_price: req.query.min_price,
-      product_brand: req.query.product_brand,
-      category: req.query.category,
-      product_details: req.query.product_details,
-      added_date: req.query.added_date,
-      thambnil: req.query.thambnil,
-      img: req.query.img,
-    };
-    console.log("jsdh");
-    res.end(JSON.stringify(response));
+  app.get("/products", async (req, res) => {
+    const getProduct = await Products.find({});
+
+    res.send(getProduct);
   });
 }
 run().catch(console.dir);
