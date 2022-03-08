@@ -7,7 +7,7 @@ router.get("/login/success", (req, res) => {
   if (req.user) {
     res.status(200).json({
       success: true,
-      message: "successful",
+      message: "successfull",
       user: req.user,
       cookies: req.user,
     });
@@ -22,7 +22,7 @@ router.get("/login/failed", (req, res) => {
 });
 
 router.get(
-  "/gogle",
+  "/google",
   passport.authenticate("google", {
     scope: ["profile"],
   })
@@ -38,7 +38,7 @@ router.get("/logout" , (req, res) => {
 
 router.get(
   "/google/callback",
-  passport.authenticate("google ", {
+  passport.authenticate("google", {
     successRedirect: CLIENT_URL,
     failureRedirect: "/login/failed",
   })

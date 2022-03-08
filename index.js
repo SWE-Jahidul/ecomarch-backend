@@ -12,9 +12,20 @@ const axios = require("axios");
 const cors = require("cors");
 require("dotenv").config();
 const bodyParser = require("body-parser");
+
 const { stringify } = require("nodemon/lib/utils");
 
 app.set("port", process.env.PORT || 5000);
+
+
+
+app.use (
+  cookieSession({
+    name:'session',
+    keys:['jahid'],
+    maxAge:24*60*60*100
+  })
+)
 
 app.use(cors());
 // parse application/json
@@ -24,6 +35,7 @@ app.use(bodyParser.json());
 
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 
 
