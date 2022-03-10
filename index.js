@@ -32,6 +32,17 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 const authRoute = require("./routes/auth");
+const orderRoute = require("./client_side_route/order");
+
+// Admin All Route 
+// Product Route
+const productRoute =  require("./admin_dashboard_route/product");
+// Category Route
+const catagorRoute = require("./admin_dashboard_route/catagory");
+// Admin Route
+const adminRoute = require("./admin_dashboard_route/admin");
+
+
 
 app.use(
   cors({
@@ -60,231 +71,9 @@ async function run() {
     password: String,
   });
 
-  // product schema
-  const productSchema = new mongoose.Schema({
-    product_name: {
-      type: String,
-    },
-    product_id: String,
-    stock_quality: String,
-    stock_qantity: Number,
-    min_price: Number,
-    product_brand: String,
-    category: String,
-    product_details: String,
-    added_date: {
-      type: Date,
-      default: Date.now,
-    },
-    thambnil: {
-      data: Buffer,
-      contentType: String,
-    },
-    img: {
-      data: Buffer,
-      contentType: String,
-    },
-  });
+ 
 
-  // catagory Schema
-  const categorySchema = new mongoose.Schema({
-    category_name: {
-      type: String,
-    },
-    category_added_date: {
-      type: Date,
-      default: Date.now,
-    },
-  });
 
-  // Add an Admin  Schema
-
-  const adminSchema = new mongoose.Schema({
-    admin_name: {
-      type: String,
-    },
-    admin_type: {
-      type: String,
-    },
-    admin_user_name: {
-      type: String,
-    },
-    admin_user_email: {
-      type: String,
-    },
-    admin_profile_details: {
-      type: String,
-    },
-    admin_phone: {
-      type: Number,
-    },
-    profile_images: {
-      img: {
-        data: Buffer,
-        contentType: String,
-      },
-    },
-  });
-
-  // const User = new mongoose.model("User", userSchema);
-  const Products = new mongoose.model("Products", productSchema);
-
-  // category Schema
-  const Category = new mongoose.model("Category", categorySchema);
-
-  //  Add an Admin
-  const AddAdmin = new mongoose.model("AddAdmin", adminSchema);
-
-  // Post product Data
-  app.post("/products", (req, res) => {
-    const {
-      product_name,
-      product_id,
-      stock_quality,
-      stock_qantity,
-      min_price,
-      product_brand,
-      category,
-      product_details,
-      added_date,
-      thambnil,
-      img,
-    } = req.body;
-    Products.findOne(
-      {
-        product_name: product_name,
-        product_id: product_id,
-        stock_quality: stock_quality,
-        stock_qantity: stock_qantity,
-        min_price: min_price,
-        product_brand: product_brand,
-        category: category,
-        product_details: product_details,
-        added_date: added_date,
-        thambnil: thambnil,
-        img: img,
-      },
-      (err, user) => {
-        const product11 = new Products({
-          product_name,
-          product_id,
-          stock_quality,
-          stock_qantity,
-          min_price,
-          product_brand,
-          category,
-          product_details,
-          added_date,
-          thambnil,
-          img,
-        });
-        product11.save((err) => {
-          if (err) {
-            res.send(err);
-            console.log("rrr", res);
-          } else {
-            res.send({
-              message: "Successfully Product Added , Please login now.",
-            });
-          }
-        });
-      }
-    );
-  });
-
-  // Post Category
-  app.post("/category", (req, res) => {
-    const { category_name, category_added_date } = req.body;
-
-    Category.findOne(
-      {
-        category_name: category_name,
-        category_added_date: category_added_date,
-      },
-      (err, user) => {
-        const Category11 = new Category({
-          category_name,
-          category_added_date,
-        });
-        Category11.save((err) => {
-          if (err) {
-            res.send(err);
-            console.log(res);
-          } else {
-            res.send({
-              message: "Successfully Category Added",
-            });
-          }
-        });
-      }
-    );
-  });
-
-  // Post an Admin
-  app.post("/addadmin", (req, res) => {
-    const {
-      admin_name,
-      admin_type,
-      admin_user_name,
-      admin_user_email,
-      admin_profile_details,
-      admin_phone,
-      profile_images,
-    } = req.bidy;
-    AddAdmin.findOne(
-      {
-        admin_name: admin_name,
-        admin_type: admin_type,
-        admin_user_name: admin_user_name,
-        admin_user_email: admin_user_email,
-        admin_profile_details: admin_profile_details,
-        admin_phone: admin_phone,
-        profile_images: profile_images,
-      },
-      (err, user) => {
-        const AddAdmin1 = new AddAdmin({
-          admin_name,
-          admin_type,
-          admin_user_name,
-          admin_user_email,
-          admin_profile_details,
-          admin_phone,
-          profile_images,
-        });
-        AddAdmin1.save((err) => {
-          if (err) {
-            res.send(err);
-            console.log(res);
-          } else {
-            res.send({
-              message: "Successfully Category Added",
-            });
-          }
-        });
-      }
-    );
-  });
-
-  // Product get Method
-  app.get("/products", async (req, res) => {
-    const getProduct = await Products.find({});
-
-    res.send(getProduct);
-  });
-
-  // Category get
-
-  app.get("/category", async (req, res) => {
-    const getCategory = await Category.find({});
-    res.send(getCategory);
-  });
-
-  // get Admin 
-  app.get("/addadmin" , async(req, res) => {
-    const getAdmin = await AddAdmin.find({});
-    res.send(getAdmin);
-    console.log("i am admin page ");
-  })
 }
 
 run().catch(console.dir);
@@ -294,6 +83,18 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", authRoute);
+
+app.use("/order",orderRoute );
+
+app.use('/product', productRoute);
+
+
+app.use('/category', catagorRoute);
+
+app.use('/admin', adminRoute);
+
+
+
 
 // update Data
 app.listen(app.get("port"), function () {

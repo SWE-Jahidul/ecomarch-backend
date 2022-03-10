@@ -28,8 +28,6 @@ router.get(
   })
 );
 
-
-
 router.get("/logout" , (req, res) => {
 
     req.logOut();
