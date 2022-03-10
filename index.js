@@ -97,13 +97,43 @@ async function run() {
     },
   });
 
-  // product Schema
+  // Add an Admin  Schema
+
+  const adminSchema = new mongoose.Schema({
+    admin_name: {
+      type: String,
+    },
+    admin_type: {
+      type: String,
+    },
+    admin_user_name: {
+      type: String,
+    },
+    admin_user_email: {
+      type: String,
+    },
+    admin_profile_details: {
+      type: String,
+    },
+    admin_phone: {
+      type: Number,
+    },
+    profile_images: {
+      img: {
+        data: Buffer,
+        contentType: String,
+      },
+    },
+  });
 
   // const User = new mongoose.model("User", userSchema);
   const Products = new mongoose.model("Products", productSchema);
 
   // category Schema
   const Category = new mongoose.model("Category", categorySchema);
+
+  //  Add an Admin
+  const AddAdmin = new mongoose.model("AddAdmin", adminSchema);
 
   // Post product Data
   app.post("/products", (req, res) => {
@@ -166,33 +196,75 @@ async function run() {
   app.post("/category", (req, res) => {
     const { category_name, category_added_date } = req.body;
 
-    Category.findOne({
-      category_name: category_name,
-      category_added_date: category_added_date,
-    },
-    (err, user) => {
-
-      const Category11 = new Category ({
-        category_name,
-        category_added_date
-      });
-      Category11.save((err) =>{
-        if(err){
-          res.send(err)
-          console.log(res);
-
-        }
-        else{
-          res.send({
-            message: "Successfully Category Added",
-
-          })
-        }
-      })
-    }
+    Category.findOne(
+      {
+        category_name: category_name,
+        category_added_date: category_added_date,
+      },
+      (err, user) => {
+        const Category11 = new Category({
+          category_name,
+          category_added_date,
+        });
+        Category11.save((err) => {
+          if (err) {
+            res.send(err);
+            console.log(res);
+          } else {
+            res.send({
+              message: "Successfully Category Added",
+            });
+          }
+        });
+      }
     );
   });
- 
+
+  // Post an Admin
+  app.post("/addadmin", (req, res) => {
+    const {
+      admin_name,
+      admin_type,
+      admin_user_name,
+      admin_user_email,
+      admin_profile_details,
+      admin_phone,
+      profile_images,
+    } = req.bidy;
+    AddAdmin.findOne(
+      {
+        admin_name: admin_name,
+        admin_type: admin_type,
+        admin_user_name: admin_user_name,
+        admin_user_email: admin_user_email,
+        admin_profile_details: admin_profile_details,
+        admin_phone: admin_phone,
+        profile_images: profile_images,
+      },
+      (err, user) => {
+        const AddAdmin1 = new AddAdmin({
+          admin_name,
+          admin_type,
+          admin_user_name,
+          admin_user_email,
+          admin_profile_details,
+          admin_phone,
+          profile_images,
+        });
+        AddAdmin1.save((err) => {
+          if (err) {
+            res.send(err);
+            console.log(res);
+          } else {
+            res.send({
+              message: "Successfully Category Added",
+            });
+          }
+        });
+      }
+    );
+  });
+
   // Product get Method
   app.get("/products", async (req, res) => {
     const getProduct = await Products.find({});
@@ -200,16 +272,20 @@ async function run() {
     res.send(getProduct);
   });
 
-// Category get 
+  // Category get
 
-app.get("/category" , async(req , res ) => {
-  const getCategory = await Category.find({});
-  res.send(getCategory)
-})
+  app.get("/category", async (req, res) => {
+    const getCategory = await Category.find({});
+    res.send(getCategory);
+  });
 
+  // get Admin 
+  app.get("/addadmin" , async(req, res) => {
+    const getAdmin = await AddAdmin.find({});
+    res.send(getAdmin);
+    console.log("i am admin page ");
+  })
 }
-
-
 
 run().catch(console.dir);
 
