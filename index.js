@@ -34,15 +34,13 @@ app.use(passport.session());
 const authRoute = require("./routes/auth");
 const orderRoute = require("./client_side_route/order");
 
-// Admin All Route 
+// Admin All Route
 // Product Route
-const productRoute =  require("./admin_dashboard_route/product");
+const productRoute = require("./admin_dashboard_route/product");
 // Category Route
 const catagorRoute = require("./admin_dashboard_route/catagory");
 // Admin Route
 const adminRoute = require("./admin_dashboard_route/admin");
-
-
 
 app.use(
   cors({
@@ -70,10 +68,6 @@ async function run() {
     email: String,
     password: String,
   });
-
- 
-
-
 }
 
 run().catch(console.dir);
@@ -84,17 +78,13 @@ app.get("/", (req, res) => {
 
 app.use("/auth", authRoute);
 
-app.use("/order",orderRoute );
+app.use("/order", orderRoute);
 
-app.use('/product', productRoute);
+app.use("/product", productRoute);
 
+app.use("/category", catagorRoute);
 
-app.use('/category', catagorRoute);
-
-app.use('/admin', adminRoute);
-
-
-
+app.use("/admin", adminRoute);
 
 // update Data
 app.listen(app.get("port"), function () {
