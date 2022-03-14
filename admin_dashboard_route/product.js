@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
+const axios = require("axios");
 
 // product schema
 const productSchema = new mongoose.Schema({
@@ -9,7 +10,8 @@ const productSchema = new mongoose.Schema({
   product_id: String,
   stock_quality: String,
   stock_qantity: Number,
-  min_price: Number,
+  regular_price: Number,
+  discount_price: Number,
   product_brand: String,
   category: String,
   product_details: String,
@@ -36,7 +38,8 @@ router.post("/products", (req, res) => {
     product_id,
     stock_quality,
     stock_qantity,
-    min_price,
+    regular_price,
+    discount_price,
     product_brand,
     category,
     product_details,
@@ -50,7 +53,8 @@ router.post("/products", (req, res) => {
       product_id: product_id,
       stock_quality: stock_quality,
       stock_qantity: stock_qantity,
-      min_price: min_price,
+      regular_price: regular_price,
+      discount_price: discount_price,
       product_brand: product_brand,
       category: category,
       product_details: product_details,
@@ -64,7 +68,8 @@ router.post("/products", (req, res) => {
         product_id,
         stock_quality,
         stock_qantity,
-        min_price,
+        regular_price,
+        discount_price,
         product_brand,
         category,
         product_details,
@@ -97,7 +102,6 @@ router.get("/products/:id", async (req, res) => {
   const id = req.params.id;
   try {
     const product = await Products.findById(id);
-
     // const product = await Products.findOne({ _id: id });
     res.send(product);
     console.log(res.send(product));
@@ -139,5 +143,6 @@ router.delete("/products/:id", async (req, res) => {
     console.log(err.message);
   }
 });
+
 
 module.exports = router;

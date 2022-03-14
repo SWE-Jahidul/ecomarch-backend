@@ -50,8 +50,4 @@ router.get("/category", async (req, res) => {
   res.send(getCategory);
 });
 
-
-
-
-
 module.exports = router;
