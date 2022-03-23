@@ -33,7 +33,7 @@ app.use(passport.session());
 
 const authRoute = require("./routes/auth");
 const orderRoute = require("./client_side_route/order");
-
+const reviewRoute = require("./client_side_route/add_reviews");
 // Admin All Route
 // Product Route
 const productRoute = require("./admin_dashboard_route/product");
@@ -85,6 +85,9 @@ app.use("/product", productRoute);
 app.use("/category", catagorRoute);
 
 app.use("/admin", adminRoute);
+
+// review Route 
+app.use("/addreview" , reviewRoute);
 
 // update Data
 app.listen(app.get("port"), function () {
