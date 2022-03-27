@@ -34,3 +34,4 @@ router.post("/addreview", (req, res) => {
     }
   );
 });
+module.exports = router;
