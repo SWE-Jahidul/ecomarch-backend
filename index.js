@@ -1,3 +1,5 @@
+// import mongoose from "mongoose"; 
+
 const cookieSession = require("cookie-session");
 const express = require("express");
 const app = express();

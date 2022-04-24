@@ -91,6 +91,14 @@ router.post("/products", (req, res) => {
   );
 });
 
+const n = new Products()
+n.name = "test"
+n.save((err, r ) =>{
+ 
+return  r._id
+})
+ console.log("--------",n);
+
 // All Product get Method
 router.get("/products", async (req, res) => {
   const getProduct = await Products.find({});
@@ -99,18 +107,25 @@ router.get("/products", async (req, res) => {
 
 // get Signle Products
 router.get("/products/:id", async (req, res) => {
-  const id = req.params.id;
+  const {id}= req.params;
+  console.log('++++++++++++++', id );
   try {
-    const product = await Products.findById(id);
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ message: "User doesn't exist" });
+    }
+
+    const product = await Products.find({_id: id }) ;
     // const product = await Products.findOne({ _id: id });
-    res.send(product);
-    console.log(res.send(product));
+    res.status(200).json(product);
+
+    //console.log(res.send(product));
   } catch (err) {
-    console.log(err.message);
+   // console.log(err.message);
   }
   //const getProduct = await Products.find({ _id : id });
-  console.log(id);
-  res.send(id);
+  //console.log(id);
+//  res.send(id);
 });
 
 // Update Product
