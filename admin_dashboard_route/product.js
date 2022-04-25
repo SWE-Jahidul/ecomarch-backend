@@ -115,7 +115,7 @@ router.get("/products/:id", async (req, res) => {
       return res.status(404).json({ message: "User doesn't exist" });
     }
 
-    const product = await Products.find({_id: id }) ;
+    const product = await Products.findOne({_id: id }) ;
     // const product = await Products.findOne({ _id: id });
     res.status(200).json(product);
 
